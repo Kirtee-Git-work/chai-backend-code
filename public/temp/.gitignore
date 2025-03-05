@@ -1,0 +1,21 @@
+# Ignore node_modules (Common in Node.js projects)
+node_modules/
+
+# Ignore environment files (Sensitive info)
+.env
+.env.local
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore compiled files
+dist/
+build/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore specific files
+secret-config.json
