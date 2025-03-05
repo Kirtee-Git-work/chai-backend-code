@@ -1,21 +1,37 @@
-# Ignore node_modules (Common in Node.js projects)
+# Ignore node_modules
 node_modules/
-
-# Ignore environment files (Sensitive info)
-.env
-.env.local
 
 # Ignore logs
 logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Ignore compiled files
+# Ignore environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Ignore build artifacts
 dist/
 build/
 
-# Ignore system files
+# Ignore dependency locks (if using Yarn or pnpm)
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore editor-specific files
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
 
-# Ignore specific files
-secret-config.json
+# Ignore npm cache
+.npm/
+
+# Ignore temporary files
+tmp/
+temp/
