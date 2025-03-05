@@ -7,5 +7,10 @@
   "scripts": {
     "dev": "nodemon src/index.js"
   },
-  "author": "kirtee"
+  "author": "kirtee",
+  "dependencies": {
+    "prettier": "^3.5.3",
+    "nodemon": "^3.1.9"
+  }
+  
 }
