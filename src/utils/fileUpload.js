@@ -1,11 +1,11 @@
-import { v2 } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import exp from "constants";
 import  fs from "fs"
 
-cloudinary.config({ 
-    cloud_name: process.env.CLOUDNERY-API-NAME, 
-    api_key: process.env.CLOUDNERY-API-KEY, 
-    api_secret: process.env.CLOUDNERY-SECRET-API
+ cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_API_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_SECRET_API
 });
 
 const uploadCloundnery = async  (localFilePath) =>{
@@ -25,4 +25,4 @@ const uploadCloundnery = async  (localFilePath) =>{
 }
 
 
-export {uploadCloundnery}
+export default uploadCloundnery
