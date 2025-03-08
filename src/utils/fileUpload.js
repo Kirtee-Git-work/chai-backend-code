@@ -16,7 +16,8 @@ const uploadCloundnery = async  (localFilePath) =>{
        const res = await cloudinary.uploader.upload(localFilePath, {
             resource_type : "auto"
         })
-        console.log("File Uploaded on Cloundnry " , res.url)
+        //console.log("File Uploaded on Cloundnry " , res.url)
+        fs.unlinkSync(localFilePath)
         return res
      } catch (error) {
         fs.unlinkSync(localFilePath)  //Removed locally saved file if opretio  failed
