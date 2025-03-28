@@ -82,15 +82,6 @@ userSchema.methods.generateAccessToken = async function () {
   );
 };
 
-// Replace "user_id_here" with an actual user ID from your database
-/* const refreshToken = Jwt.sign(
-  { _id: "67e533da031531a9b0432904" },
-  process.env.REFRESH_TOKEN_SECRET,
-  { expiresIn: process.env.REFRESH_TOKEN_EXPIREY }
-); */
-
-//console.log("Generated Refresh Token:", refreshToken);
-
 userSchema.methods.generateRefreshToken = async function () {
   return Jwt.sign(
     {
