@@ -1,6 +1,6 @@
 
 
-export default asyncHandle;
+
 
 const asyncHandle = (fn) => async(req,res,next)  =>{
     try {
@@ -12,3 +12,6 @@ const asyncHandle = (fn) => async(req,res,next)  =>{
         })
     }
 }
+
+
+export default asyncHandle;
