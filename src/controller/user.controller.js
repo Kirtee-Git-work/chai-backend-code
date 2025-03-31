@@ -199,14 +199,25 @@ const refreshAccessToken = asyncHandle(async (req, res, next) => {
 
 const changeCurrentPasword = asyncHandle(async(req,res,next) =>{
   const  {oldPassword, newPassword,confirmPassword} = req.body
-  if(!(newPassword === confirmPassword)){
-    throw new ApiError (400, "New and Confirm Password is not Matched")
-  }
-  if(!oldPassword && !newPassword){
-   throw new ApiError (400, "oldPassword and oldPassword is required" )
-  }
 
- const user = await User.findById(req.user?._id)
+  //console.log("Received:", req.body);
+
+  if (!oldPassword || !newPassword || !confirmPassword) {
+    throw new ApiError(400, "Old password, new password, and confirm password are required");
+  }
+  
+  if (newPassword !== confirmPassword) {
+    throw new ApiError(400, "New password and confirm password do not match");
+  }
+  
+  const user = await User.findById(req.user?._id).select("+password");
+
+ //const user = await User.findById(req.user?._id)
+ console.log("user",user)
+ if(!user){
+  throw new ApiError(400, "Uer not found")
+ }
+ 
  const isPasswordCorrect =  await user.isPasswordCorrect(oldPassword)
  console.log("isPasswordCorrect", isPasswordCorrect)
 
@@ -223,11 +234,15 @@ const changeCurrentPasword = asyncHandle(async(req,res,next) =>{
 })
 
 const getCurrentUser  = asyncHandle(async(req,res,next) =>{
+  console.log("req.user",req.user)
   return res
   .status(200)
-  .json(200,req.user, "Current User Fetched Successfully")
-
+  .json(new ApiResponse (200,req.user, "Current User Fetched Successfully"))
+  
+  
+  
 })
+
 
 const updateAccountDetails = asyncHandle(async(req,res,next) =>{
     const {fullName,email} = req.body
@@ -311,7 +326,8 @@ const updateUserCoverdImage = asyncHandle (async(req,res,next) =>{
 
 const getChannelProfile = asyncHandle(async(req,res,next) =>{
     const {userName} = req.params
-
+    
+    console.log("req.params", req.params)
     if(!userName?.trim()){
       throw new ApiError(404, "Username not found")
     }
@@ -350,7 +366,7 @@ const getChannelProfile = asyncHandle(async(req,res,next) =>{
            }
         },
         isSubscribed:{
-          $count:{
+          $cond:{
             if:{$in: [req.user?._id, "subscriber.subscriber"]},
             then: true,
             else:false
@@ -378,7 +394,7 @@ const getChannelProfile = asyncHandle(async(req,res,next) =>{
 
   return res
   .status(200)
-  .json(new ApiResponse, 200, channel[0], "User Channel Fetch Sccussfully ")
+  .json(new ApiResponse (200, channel[0], "User Channel Fetch Sccussfully "))
 })
 
 const getWatchHistory = asyncHandle(async(req,res,next) =>{
@@ -426,8 +442,8 @@ const getWatchHistory = asyncHandle(async(req,res,next) =>{
    ])
 
    return res
-   .status
-   .json(new ApiResponse, (200,user[0].watchHistory,"Watch History fetch sccussflly"))
+   .status(200)
+   .json(new ApiResponse (200,user[0].watchHistory,"Watch History fetch sccussflly"))
 })
 
 export default {

@@ -9,14 +9,14 @@ const verifyJWT = asyncHandle(async (req, res, next) => {
       req.cookies?.accessToken ||
       req.headers["authorization"]?.replace("Bearer ", "");
 
-    console.log("🔹 Token received:", token);
+   
 
     if (!token || typeof token !== "string") {
       throw new ApiError(400, "Unauthorized: Token missing or invalid.");
     }
 
     const decodedToken = Jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log("Decoded Token:", decodedToken);
+   
 
     const user = await User.findById(decodedToken?._id).select(
       "-password -refreshToken"
