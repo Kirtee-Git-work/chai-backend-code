@@ -44,8 +44,8 @@ router.route("/avatar").patch(verifyJWT,upload.single("avatar"),updateUSerAvatar
 router.route("/coverd-Image").patch(verifyJWT,upload.single("coverImage"), updateUserCoverdImage)
 
 //coz using params
-router.route("/c/:Channel-Profile").get(verifyJWT,getChannelProfile)
 
+router.route("/c/:userName").get(verifyJWT, getChannelProfile);
 
 router.route("/watch-history").get(verifyJWT,  getWatchHistory)
 
