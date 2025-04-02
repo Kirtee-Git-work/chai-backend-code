@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import Mongoose, { Schema } from "mongoose";
+
+import mongoose, { Schema } from "mongoose";
 
 const tweetSchema = new Schema
   ({
@@ -12,6 +12,8 @@ const tweetSchema = new Schema
       require: true,
     },
   },
-  { timestamps: true });
+  { timestamps: true, versionKey:false });
 
-export const Tweet = mongoose.model("Tweet", tweetSchema);
+ const Tweet = mongoose.model("Tweet", tweetSchema);
+
+ export default Tweet

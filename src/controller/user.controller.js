@@ -112,7 +112,7 @@ const loginUser = asyncHandle(async (req, res) => {
   //console.log("accessTokenInLogin",accessToken)
 
 
-  const loggedUser = await User.findById(user._id).lean().select(
+  const loggedUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
   
