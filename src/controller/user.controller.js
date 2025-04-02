@@ -41,6 +41,9 @@ const registerUser = asyncHandle(async (req, res) => {
   }
 
   const avtarLocalPath = req.files?.avtar?.[0]?.path;
+
+  console.log("avtarLocalPath", avtarLocalPath)
+
   const coverdImageLocalPath = req.files?.coverdImage?.[0]?.path;
 
   if (!avtarLocalPath) {
@@ -76,6 +79,7 @@ const registerUser = asyncHandle(async (req, res) => {
 
 const loginUser = asyncHandle(async (req, res) => {
   const { email, UserName, password } = req.body;
+  
 
   if (!email && !UserName) {
     throw new ApiError(400, "Email or Username is required");
@@ -106,10 +110,13 @@ const loginUser = asyncHandle(async (req, res) => {
     user._id
   );
   //console.log("accessTokenInLogin",accessToken)
-  const loggedUser = await User.findById(user._id).select(
+
+
+  const loggedUser = await User.findById(user._id).lean().select(
     "-password -refreshToken"
   );
-
+  
+ // console.log("loggedUser", loggedUser)
   const options = { httpOnly: true, secure: true };
 
   return (
@@ -130,7 +137,6 @@ const loginUser = asyncHandle(async (req, res) => {
 });
 
 const logOut = asyncHandle(async (req, res) => {
-  //console.log("Received logout req")
 
   await User.findByIdAndUpdate(
     req.user._id,
@@ -238,9 +244,6 @@ const getCurrentUser  = asyncHandle(async(req,res,next) =>{
   return res
   .status(200)
   .json(new ApiResponse (200,req.user, "Current User Fetched Successfully"))
-  
-  
-  
 })
 
 
@@ -272,7 +275,7 @@ const updateUSerAvatar = asyncHandle (async(req,res,next) =>{
    const avtarLocalPath = req.file?.path
 
    if(!avtarLocalPath){
-    throw new ApiError(400, "Avtar Fie is missing ")
+
    }
 
    const avtar = await uploadCloundnery(avtarLocalPath)
@@ -325,8 +328,7 @@ const updateUserCoverdImage = asyncHandle (async(req,res,next) =>{
 })
 
 const getChannelProfile = asyncHandle(async(req,res,next) =>{
-    const {userName} = req.params
-    
+    const {userName} = req.params 
     console.log("req.params", req.params)
     if(!userName?.trim()){
       throw new ApiError(404, "Username not found")
@@ -335,7 +337,7 @@ const getChannelProfile = asyncHandle(async(req,res,next) =>{
     const channel = await User.aggregate([
       {
       $match:{
-        userName : userName?.toLowerCase( )
+        UserName : userName?.toLowerCase( )
       }
       },
       {
@@ -355,24 +357,19 @@ const getChannelProfile = asyncHandle(async(req,res,next) =>{
         }
       },
       {
-        $addFields:{
-           subscribedCount:{
-            $size:"$subscriber"
-           }
-        },
-        $addFields:{
-          channelSubscribedTOCount:{
-            $size:"$subscribedTo"
-           }
-        },
-        isSubscribed:{
-          $cond:{
-            if:{$in: [req.user?._id, "subscriber.subscriber"]},
-            then: true,
-            else:false
+        $addFields: {
+          subscribedCount: { $size: "$subscriber" },
+          channelSubscribedTOCount: { $size: "$subscribedTo" },
+          isSubscribed: {
+            $cond: {
+              if: { $in: [req.user?._id, "$subscriber.subscriber"] },
+              then: true,
+              else: false
+            }
           }
         }
       },
+      
       {
        $project:{
         fullName:1,
