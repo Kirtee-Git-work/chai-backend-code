@@ -53,24 +53,28 @@ const toggleSubscription = asyncHandle(async (req, res) => {
 
 
 const getUserChannelSubscribers = asyncHandle(async (req, res) => {
-    const {channelId} = req.params
-    if(!channelId){
-        throw new ApiError(400,"Channel Id is Required")
-    }
-
-  const subscribers = await  Subscription.find({channel:channelId})
-  .populate("subscriber", "fullName userName avatar email") 
-  .select("subscriber");
-
-   console.log("subscribers", subscribers)
-
-   if (!subscribers.length) {
-    return res.status(200).json(new ApiResponse(200, [], "No subscribers found for this channel"));
-}
-
-  return res.status(200).json(
-    new ApiResponse(200, subscribers, "Subscribers fetched successfully")
-);
+   try {
+     const {channelId} = req.params
+     if(!channelId){
+         throw new ApiError(400,"Channel Id is Required")
+     }
+ 
+   const subscribers = await  Subscription.find({channel:channelId})
+   .populate("subscriber", "fullName userName avatar email") 
+   .select("subscriber");
+ 
+    console.log("subscribers", subscribers)
+ 
+    if (!subscribers.length) {
+     return res.status(200).json(new ApiResponse(200, [], "No subscribers found for this channel"));
+ }
+ 
+   return res.status(200).json(
+     new ApiResponse(200, subscribers, "Subscribers fetched successfully")
+ );
+   } catch (error) {
+    throw ApiError(400,"Something went wrong while  Subscribed fetched successfully")
+   }
 })
 
 
