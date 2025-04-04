@@ -45,7 +45,7 @@ const getUserTweets = asyncHandle(async (req, res) => {
     
        const tweet =  await Tweet.find({owner :tweetId })
        
-       res
+     return  res
        .status(200)
        .json(new ApiResponse (200, tweet, "Tweet fetched successfully"))
     } catch (error) {
@@ -75,7 +75,7 @@ const updateTweet = asyncHandle(async (req, res) => {
             { new: true }
         );
     
-        res
+       return res
         .status(200)
         .json(new ApiResponse (200,updatedTweet,"Tweet is updated Sccuessfully"))
     } catch (error) {
@@ -95,7 +95,7 @@ const deleteTweet = asyncHandle(async (req, res) => {
  
     const tweet = await Tweet.findOneAndDelete(tweetId)
     
-    res
+   return res
     .status(200)
     .json(new ApiResponse(200, tweet,"Tweet Deleted Successfully"))
    } catch (error) {

@@ -25,7 +25,7 @@ const createPlaylist = asyncHandle(async (req, res) => {
          throw new ApiError(400, "Something went wrong while creating play list")
      } 
  
-     res 
+    return res 
      .status(200)
      .json(new ApiResponse (200 ,createdPlayList, "Paylist Created Successfully"))
    } catch (error) {
@@ -46,7 +46,7 @@ const getUserPlaylists = asyncHandle(async (req, res) => {
     //.populate("video", "title thumbnailUrl duration") 
     .select("-password -refreshToken"); 
  
-    res
+   return res
     .status(200)
     .json(new ApiResponse (200,playlists, "User Playlist Fetch Successfully"))
    } catch (error) {
@@ -65,7 +65,7 @@ const getPlaylistById = asyncHandle(async (req, res) => {
   
      const playlist = await Playlist.findById(playlistId);
   
-     res
+    return res
      .status(200)
      .json(new ApiResponse (200,playlist, "Playlist Fetch by Id Successfully"))
   } catch (error) {
@@ -98,7 +98,7 @@ const addVideoToPlaylist = asyncHandle(async (req, res) => {
   
     const updatedPlaylist = await Playlist.findById(playlistId).populate("video");
   
-    res
+    return res
     .status(200)
     .json(new ApiResponse (200, updatedPlaylist, "Video Added Sccessfully in Playlist" ))
   } catch (error) {
@@ -149,7 +149,7 @@ const deletePlaylist = asyncHandle(async (req, res) => {
    throw new ApiError(400, "Playlist Not Found")
   }
  
-  res
+  return res
   .status(200)
   .json(new ApiResponse (200,playlist, "Playlist Deleted Succefully"))
  } catch (error) {
@@ -182,7 +182,7 @@ const updatePlaylist = asyncHandle(async (req, res) => {
       if(!playlist){
         throw ApiError(400, "playlist is not found")
       }
-      res
+     return res
       .status(200)
       .json(new ApiResponse (200,playlist ,"Playlist Updated Successfully" ))
   } catch (error) {

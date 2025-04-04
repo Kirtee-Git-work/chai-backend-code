@@ -17,7 +17,7 @@ const likesSchema = new Schema ({
     },
     tweet:{
         type:Schema.Types.ObjectId,
-        ref:Tweet
+        ref:"Tweet"
     }
 
 },
@@ -27,4 +27,6 @@ const likesSchema = new Schema ({
 )
 
 
-export  const Likes = Mongoose.model("Likes", likesSchema)
+  const Likes = Mongoose.model("Likes", likesSchema)
+
+  export default Likes
