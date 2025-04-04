@@ -4,11 +4,11 @@ const playlistSchema = new Schema({
 
      name:{
         type:String,
-        require:true
+        required:true
      },
      description:{
         type:String,
-        type:require 
+        required:true 
      },
      video:{
         type:mongoose.Types.ObjectId,
@@ -20,9 +20,12 @@ const playlistSchema = new Schema({
      }
 },
 {
-    timestamps:true
+    timestamps:true,
+    versionKey:false
 }
 )
 
 
-export const Playlist = mongoose.model("Playlist",playlistSchema )
+ const Playlist = mongoose.model("Playlist",playlistSchema )
+
+ export default Playlist
